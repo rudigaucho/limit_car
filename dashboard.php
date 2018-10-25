@@ -1,10 +1,20 @@
-<?php include "coon.php" ?>
+<?php include "coon.php";
+include "dados_graficos.php";
+ ?>
 
 
 <?php 
 
 
 session_start();
+
+if(!isset($_SESSION["login"]) &&  !isset($_SESSION["senha"]) )
+{
+  header("Location: index.html");
+  exit;
+  
+  
+}
 
 
 
@@ -28,15 +38,15 @@ session_start();
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['Task', 'Hours per Day'],
-          ['passeio',1],
-          ['empresa',2],
-          ['caminhao',1],
-          ['maquina',1],
-          ['moto',1],
-          ['onibus',1],
-          ['trator',1],
-          ['nautico',1],
-          ['outros',1]
+          ['passeio',<?php echo $passeio ?>],
+          ['empresa',<?php echo $empresa ?>],
+          ['caminhao',<?php echo $caminhao ?>],
+          ['maquina',<?php echo $maquina ?>],
+          ['moto',<?php echo $moto ?>],
+          ['onibus',<?php echo $onibus ?>],
+          ['trator',<?php echo $trator ?>],
+          ['nautico',<?php echo $nautico ?>],
+          ['outros',<?php echo $outros ?>]
 
         ]);
 
@@ -61,18 +71,18 @@ session_start();
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['Mês', 'Ativos', 'Retiradas', ''],
-          ['JAN', 2, 1, 0],
-          ['FEV', 2,1, 0],
-          ['MAR', 2, 1, 0],
-          ['ABR', 2, 1, 0],
-          ['MAI', 2, 1, 0],
-          ['JUN', 2, 1, 0],
-          ['JUL', 2, 1, 0],
-          ['AGO', 2, 1, 0],
-          ['SET', 2, 1, 0],
-          ['OUT', 2, 1, 0],
-          ['NOV', 2, 1, 0],
-          ['DEZ', 2, 1, 0]
+          ['JAN', <?php echo $atv_jan ?>, <?php echo $ret_jan ?>, 0],
+          ['FEV', <?php echo $atv_fev ?>, <?php echo $ret_fev ?>, 0],
+          ['MAR', <?php echo $atv_mar ?>, <?php echo $ret_mar ?>, 0],
+          ['ABR', <?php echo $atv_abr ?>, <?php echo $ret_abr ?>, 0],
+          ['MAI', <?php echo $atv_mai ?>, <?php echo $ret_mai ?>, 0],
+          ['JUN', <?php echo $atv_jun ?>, <?php echo $ret_jun ?>, 0],
+          ['JUL', <?php echo $atv_jul ?>, <?php echo $ret_jul ?>, 0],
+          ['AGO', <?php echo $atv_ago ?>, <?php echo $ret_ago ?>, 0],
+          ['SET', <?php echo $atv_set ?>, <?php echo $ret_set ?>, 0],
+          ['OUT', <?php echo $atv_out ?>, <?php echo $ret_out ?>, 0],
+          ['NOV', <?php echo $atv_nov ?>, <?php echo $ret_nov ?>, 0],
+          ['DEZ', <?php echo $atv_dez ?>, <?php echo $ret_dez ?>, 0]
         ]);
 
         var options = {
@@ -200,6 +210,20 @@ session_start();
                        
                     </ul>
                 </li>
+
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">LOGOUT   <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                       
+                      
+                        <li>
+                            <a href="logout.php"><i class="glyphicon glyphicon-log-out"></i> Sair</a>
+                        </li>
+                       
+                       
+                    </ul>
+                </li>
             </ul>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
       
@@ -240,7 +264,8 @@ session_start();
       <tr >
        
       <th>CLIENTE</th>
-          <th>DATA</th>
+          <th>DATA SOLICITAÇÃO</th>
+          <th>DATA AGENDAMENTO</th>
           <th>ENDEREÇO</th>
           <th>BAIRRO</th>
         
@@ -286,13 +311,14 @@ if (mysql_num_rows($sql) > 0)
     <tbody>
       <tr class="success">
       
- <td> <?php echo $dado ["nome"];  ?></td>  
-  <td> <?php echo $dado ["data_soli"];  ?></td>    
-   <td> <?php echo $dado ["endereco"];  ?></td> 
-    <td> <?php echo $dado ["bairro"];  ?></td>  
-     <td> <?php echo $dado ["contato"];  ?></td> 
-     <td> <?php echo $dado ["mode_vei"];  ?></td> 
-     <td> <?php echo $dado ["ano_vei"];  ?></td> 
+  <td> <?php echo $dado ["nome"];  ?></td>  
+  <td> <?php echo $dado ["data_soli"];  ?></td> 
+  <td> <?php echo $dado ["data_ag"];  ?></td>   
+  <td> <?php echo $dado ["endereco"];  ?></td> 
+  <td> <?php echo $dado ["bairro"];  ?></td>  
+  <td> <?php echo $dado ["contato"];  ?></td> 
+  <td> <?php echo $dado ["mode_vei"];  ?></td> 
+  <td> <?php echo $dado ["ano_vei"];  ?></td> 
      
 
 
@@ -353,12 +379,13 @@ if (mysql_num_rows($sql) > 0)
       <tr >
        
       <th>CLIENTE</th>
-          <th>DATA</th>
-          <th>ENDEREÇO</th>
-          <th>BAIRRO</th>
+      <th>DATA SOLICITAÇÃO</th>
+      <th>DATA AGENDAMENTO</th>
+      <th>ENDEREÇO</th>
+      <th>BAIRRO</th>
         
-            <th>CONTATO</th> <!-- ROTA -->
-            <th>OBS</th>
+      <th>CONTATO</th> <!-- ROTA -->
+      <th>OBS</th>
            
             
              
@@ -400,11 +427,12 @@ if (mysql_num_rows($sql) > 0)
       <tr class="danger">
       
  <td> <?php echo $dado ["nome"];  ?></td>  
-  <td> <?php echo $dado ["data"];  ?></td>    
-   <td> <?php echo $dado ["endereco"];  ?></td> 
-    <td> <?php echo $dado ["bairro"];  ?></td>  
-     <td> <?php echo $dado ["contato"];  ?></td> 
-     <td> <?php echo $dado ["obs"];  ?></td> 
+ <td> <?php echo $dado ["data"];  ?></td> 
+ <td> <?php echo $dado ["data_ag"];  ?></td>    
+ <td> <?php echo $dado ["endereco"];  ?></td> 
+ <td> <?php echo $dado ["bairro"];  ?></td>  
+ <td> <?php echo $dado ["contato"];  ?></td> 
+ <td> <?php echo $dado ["obs"];  ?></td> 
     
      
 
@@ -455,12 +483,13 @@ if (mysql_num_rows($sql) > 0)
       <tr >
        
       <th>CLIENTE</th>
-          <th>DATA</th>
-          <th>ENDEREÇO</th>
-          <th>BAIRRO</th>
+      <th>DATA SOLICITAÇÃO</th>
+      <th>DATA AGENDAMENTO</th>
+      <th>ENDEREÇO</th>
+      <th>BAIRRO</th>
         
-            <th>CONTATO</th> <!-- ROTA -->
-            <th>MODELO</th>
+      <th>CONTATO</th> <!-- ROTA -->
+      <th>MODELO</th>
            
             
              
@@ -502,11 +531,12 @@ if (mysql_num_rows($sql) > 0)
       <tr class="warning">
       
  <td> <?php echo $dado ["nome"];  ?></td>  
-  <td> <?php echo $dado ["data_ret"];  ?></td>    
-   <td> <?php echo $dado ["endereco"];  ?></td> 
-    <td> <?php echo $dado ["bairro"];  ?></td>  
-     <td> <?php echo $dado ["contato"];  ?></td> 
-     <td> <?php echo $dado ["mod_vei"];  ?></td> 
+ <td> <?php echo $dado ["data_soli"];  ?></td> 
+ <td> <?php echo $dado ["data_ag"];  ?></td>      
+ <td> <?php echo $dado ["endereco"];  ?></td> 
+ <td> <?php echo $dado ["bairro"];  ?></td>  
+ <td> <?php echo $dado ["contato"];  ?></td> 
+ <td> <?php echo $dado ["mod_vei"];  ?></td> 
     
      
 

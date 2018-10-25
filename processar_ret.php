@@ -3,6 +3,17 @@
 <?php
 include "coon.php";
 
+
+session_start();
+
+if(!isset($_SESSION["login"]) &&  !isset($_SESSION["senha"]) )
+{
+  header("Location: index.html");
+  exit;
+  
+  
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -22,8 +33,24 @@ include "coon.php";
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  </script>
   
+  <!-- ///////PASTA BOOTSTRAP ////////////////////-->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+
+
+ <script src="jquery-min.js"></script>
+ <script src="jquery-ui.js"></script>
+ <script src="jquery-ui.min.js"></script>
+<script src="js/jquery.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+    <!-- ///////PASTA BOOTSTRAP ////////////////////-->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -157,7 +184,9 @@ echo '
     
     
 
-
+      <br><br><button type="submit" value="Enviar" class="btn btn-warning" id="enviar" required > <strong>Enviar</strong> </button><br><br><br><br>
+ 
+ 
 
 
    

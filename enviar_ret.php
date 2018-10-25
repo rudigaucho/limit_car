@@ -83,12 +83,16 @@ $cod_cli = (mt_rand(1,1010200));
 $cpf =$_POST['cpf'];
 $cod_cli =$_POST['cod_cli'];
 $obs =$_POST['obs'];
+$data =$_POST['date'];
 
 $sql2 = mysql_query ("select * from retirada where cod_cli = '$cod_cli' and status = 'PENDENTE' " );
 $row2 = mysql_num_rows($sql2);
 
 $sql = mysql_query ("select * from cliente where cod_cli = '$cod_cli' and status = 'ATIVO' " );
 $row = mysql_num_rows($sql);
+
+$sql3 = mysql_query ("select * from manutencao where cod_cli = '$cod_cli' and status = 'PENDENTE' " );
+$row3 = mysql_num_rows($sql3);
 
 if  ($row2 >= 1)
 {
@@ -102,7 +106,12 @@ echo "CLIENTE JÁ POSSUI RETIRADA EM ABERTO!";
 }
 
 
+else if  ($row3 >= 1)
+{
 
+	echo "CLIENTE  POSSUI MANUTENÇÃO EM ABERTO!";
+
+}
 
 
  else if  ($row >= 1)
@@ -126,9 +135,9 @@ echo "CLIENTE JÁ POSSUI RETIRADA EM ABERTO!";
 
 
 
-$query = "insert into retirada (cod_cli,data_soli,status)";
+$query = "insert into retirada (cod_cli,data_soli,status,data_ag)";
 
-$query.= "values ('$cod_cli',NOW(),'PENDENTE')";
+$query.= "values ('$cod_cli',NOW(),'PENDENTE','$data')";
 
 
 

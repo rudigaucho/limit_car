@@ -88,8 +88,9 @@ $bairro =$_POST['bairro'];
 $contato =$_POST['contato'];
 $mod_vei =$_POST['mod_vei'];
 $ano_vei =$_POST['ano_vei'];
-$data_ag =$_POST['data_ag'];
+$data_ag =$_POST['date'];
 $modalidade =$_POST['modalidade'];
+
 
 
 
@@ -126,7 +127,7 @@ $query.= "values ('$cod_cli','$nome','$cpf','$uf','$endereco','$bairro','$contat
 
 $query2 = "insert into instalacao (cod_cli,data_soli,status,data_ag)";
 
-$query2.= "values ('$cod_cli',NOW(),'PENDENTE','$data')
+$query2.= "values ('$cod_cli',NOW(),'PENDENTE','$data_ag')
 ";
 
 

@@ -62,6 +62,18 @@ function saidasuccessfully()
 
 <title>CADASTRO CLIENTE</title>
 
+<!-- ///////PASTA BOOTSTRAP ////////////////////-->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+
+
+ <script src="jquery-min.js"></script>
+ <script src="jquery-ui.js"></script>
+ <script src="jquery-ui.min.js"></script>
+<script src="js/jquery.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+    <!-- ///////PASTA BOOTSTRAP ////////////////////-->
 
 </head>
 
@@ -83,6 +95,7 @@ $cod_cli = (mt_rand(1,1010200));
 $cpf =$_POST['cpf'];
 $cod_cli =$_POST['cod_cli'];
 $obs =$_POST['obs'];
+$data =$_POST['date'];
 
 
 
@@ -126,9 +139,9 @@ echo "CLIENTE NÃO ESTA ATIVO!";
 
 
 
-$query = "insert into manutencao (cod_cli,data,obs,status)";
+$query = "insert into manutencao (cod_cli,data,status,obs,data_ag)";
 
-$query.= "values ('$cod_cli',NOW(),'$obs','PENDENTE')";
+$query.= "values ('$cod_cli',NOW(),'PENDENTE','$obs', '$data')";
 
 
 

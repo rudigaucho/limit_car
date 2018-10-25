@@ -2,6 +2,14 @@
 
 session_start();
 
+if(!isset($_SESSION["login"]) &&  !isset($_SESSION["senha"]) )
+{
+  header("Location: index.html");
+  exit;
+  
+  
+}
+
 
 ?>
 
@@ -217,7 +225,7 @@ height:70px;
         <th>CÓDIGO</th>
         <th>NOME</th>
      
-         <th>CPF</th>
+         <th>PLACA</th>
         <th>UF</th>
           <th>ENDEREÇO</th>
          <th>BAIRRO</th>

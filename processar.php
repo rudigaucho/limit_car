@@ -3,32 +3,16 @@
 <?php
 include "coon.php";
 
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
+session_start();
 
-
-
-
-<link rel="icon" href="img/logo_oi.png">
-	
-
-  <title>Sistema Limit Car</title>
-  <link rel="icon" href="img/key.png">
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  </script>
+if(!isset($_SESSION["login"]) &&  !isset($_SESSION["senha"]) )
+{
+  header("Location: index.html");
+  exit;
   
-</head>
-<body>
-
-
-<?php
+  
+}
 
 $id2 = $_GET['cpf'];
 $seleciona_dados = mysql_query("select * from cliente where cpf = '".$_GET['cpf']."'");
@@ -90,7 +74,7 @@ else
 
 echo '
 
-  <form class="form" role="form" name="seachform" method="post" action="enviar_cad_manut.php " >
+  <form class="form" role="form" name="seachform" method="post" id="form" action="enviar_cad_manut.php " >
 
    
 
@@ -151,71 +135,13 @@ echo '
 
        <label for="email">ANO VEÍCULO:</label>
       <input type="text" class="form-control" id="ano_vei" name="ano_vei" value="'.$lin_dado_cli['ano_vei'].'"  required readonly >
-    </div>
-      <div class="form-group">
-    <label for="email">OBS: </label>
-  <textarea class="form-control" rows="5" id="obs" name="obs" maxlength="300" placeholder="Máximo 300 caracteres" maxlength="300"></textarea>
-    </div>
+    </div   >   
     
-
-
-
-
-   
-      
+    <br><br><button type="submit" value="Enviar" class="btn btn-warning" id="enviar" required > <strong>Enviar</strong> </button><br><br><br><br>
+    ';} ?>  
 
     
 
-
-
-         
-  
-
-
-
-
-
-   
-    
-   
- 
-   
 
  
-   
-     <br><br><button type="submit" value="Enviar" class="btn btn-warning" id="enviar" required > <strong>Enviar</strong> </button><br><br><br><br>
-
-
-
-     
-
-        
-   
-
-  
-
-  
-    
-   
-     
-
-    
-    
-  
-  
-    
-    
-
-
-    
-  </form>
-';
-}
-
-
-
-
-
-  
-  ?>
 

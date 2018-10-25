@@ -1,6 +1,14 @@
  <?php include "coon.php"; 
 
+session_start();
 
+if(!isset($_SESSION["login"]) &&  !isset($_SESSION["senha"]) )
+{
+  header("Location: index.html");
+  exit;
+  
+  
+}
 
 
 
@@ -147,11 +155,13 @@ height:70px;
             <th>MODELO</th>
             <th>ANO</th>
             <th>DATA SOLI</th>
+            <th>DATA AGENDAMENTO</th>
             <th>DATA RET</th>
              <th>STATUS</th>
              
 
              <th>ENCERRAR</th>
+             <th>REAGENDAR</th>
       
  
 
@@ -170,7 +180,7 @@ $cpf = $_POST['cpf'];
 
 
 
-$sql = mysql_query ("select cliente.cod_cli,data_soli,data_ret,cpf,cod_ret,nome,uf,contato,mod_vei,ano_vei,retirada.status from retirada join cliente on retirada.cod_cli=cliente.cod_cli where cliente.cpf = '$cpf';" );
+$sql = mysql_query ("select cliente.cod_cli,data_ag,data_soli,data_ret,cpf,cod_ret,nome,uf,contato,mod_vei,ano_vei,retirada.status from retirada join cliente on retirada.cod_cli=cliente.cod_cli where cliente.cpf = '$cpf';" );
 // $sql2 = mysql_query ("select count(*) as conta  from relatorio where gra = '".$busca."' and data BETWEEN  '$data 00:00:00' and '$data 23:59:00' order by data desc   " );
 
   
@@ -197,6 +207,7 @@ if (mysql_num_rows($sql) > 0)
 <td> <?php echo $dado ["mod_vei"];  ?></td>
 <td> <?php echo $dado ["ano_vei"];  ?></td>
 <td> <?php echo $dado ["data_soli"];  ?></td>
+<td> <?php echo $dado ["data_ag"];  ?></td>
 <td> <?php echo $dado ["data_ret"];  ?></td>
 <td> <?php echo $dado ["status"];  ?></td>
 
@@ -215,7 +226,8 @@ if (mysql_num_rows($sql) > 0)
 <td> <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal<?php echo $dado ['cod_ret'];  ?>" >BAIXAR</button> </td>  <?php } else {?>   <td> </td> <?php } ?>
  
 
-
+<?php if ($dado ["status"] == 'PENDENTE') { ?>
+<td> <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal2<?php echo $dado ['cod_ret'];  ?>" >REAGENDAR</button> </td>  <?php } else {?>   <td> </td> <?php } ?>
 
 <div class="modal fade" id="myModal<?php echo $dado ['cod_ret'];  ?>" role="dialog">
     <div class="modal-dialog" >
@@ -229,6 +241,7 @@ if (mysql_num_rows($sql) > 0)
   <div class="form-group" >
  
     <input type="hidden" class="form-control" name="cod_cli" id="cod_cli" value="<?php echo $dado["cod_cli"] ?>" readonly required>
+    <input type="hidden" class="form-control" name="cod_ins" id="cod_ins" value="<?php echo $dado["cod_ins"] ?>" readonly required>
     <label for="email">CÓD. RET: </label>
     <input type="text" class="form-control" name="cod_ret" id="cod_ret" value="<?php echo $dado["cod_ret"] ?>" readonly required>
 
@@ -297,6 +310,120 @@ if (mysql_num_rows($sql) > 0)
   </div>
   
 </div>
+</div>
+
+
+
+<!-- MODAL REAGENDAMENTO -->
+
+
+<div id="myModal2<?php echo $dado ['cod_ret'];  ?>" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">REAGENDAR INSTALAÇÃO</h4>
+      </div>
+      <div class="modal-body">
+      <form role="form" id="form" name="seachform" method="post" action="pesq_ret.php " >
+  <div class="form-group" >
+
+  
+ 
+    <input type="hidden" class="form-control" name="cod_cli" id="cod_cli" value="<?php echo $dado["cod_cli"] ?>" readonly required>
+    <input type="hidden" class="form-control" name="cod_ret" id="cod_ins" value="<?php echo $dado["cod_ret"] ?>" readonly required>
+
+    
+    <label for="email">NOME: </label>
+    <input type="text" class="form-control" id="porta" value="<?php echo $dado["nome"] ?>" name="porta" readonly  required>
+    <br><br><br>
+    <label for="email">NOVO AGENDAMENTO: </label>
+   
+    <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+ 
+ <!--Font Awesome (added because you use icons in your prepend/append)-->
+ <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+ 
+ <!-- Inline CSS based on choices in "Settings" tab -->
+ <style>.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso form button, .bootstrap-iso form button:hover{color: white !important;} .asteriskField{color: red;}</style>
+ 
+ <!-- HTML Form (wrapped in a .bootstrap-iso div) -->
+ <div class="bootstrap-iso">
+ 
+   <div class="row">
+ 
+ 
+     <div class="form-group ">
+ 
+       <div class="col-sm-10">
+         <div class="input-group">
+           <div class="input-group-addon">
+             <i class="fa fa-calendar">
+             </i>
+           </div>
+           <input class="form-control" id="date" name="date" required placeholder="DD/MM/AAAA" type="text" />
+         </div>
+       </div>
+     </div>
+ 
+ 
+ 
+   </div>
+ 
+ </div>
+ 
+ 
+ <!-- Extra JavaScript/CSS added manually in "Settings" tab -->
+ <!-- Include jQuery -->
+ <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+ 
+ <!-- Include Date Range Picker -->
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
+ 
+ <script>
+   $(document).ready(function(){
+ var date_input=$('input[name="date"]'); //our date input has the name "date"
+ var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+ date_input.datepicker({
+ format: 'yyyy-mm-dd',
+ container: container,
+ todayHighlight: true,
+ autoclose: true,
+ })
+ })
+ </script>
+ 
+ 
+ 
+ 
+ 
+ </div>
+     
+ <button type="submit"  name="submit3" id="submit3" class="btn btn-default"  > REAGENDAR</button> 
+ 
+  
+</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">FECHAR</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!--                              -->
 
 
       </tr> 
@@ -334,6 +461,7 @@ while ($dado = mysql_fetch_assoc($sql3))
 
 $cod_ret =$_POST['cod_ret'];
 $cod_cli =$_POST['cod_cli'];
+$data =$_POST['date'];
 
 
 
@@ -388,7 +516,54 @@ echo ' <h2>ERRO NO CADASTRO!!';
 }
 
 
+if (isset($_POST ['submit3']) )
+{
 
+
+
+
+$query = "update retirada SET  data_ag = '$data' where cod_ret = '$cod_ret'";
+
+
+
+
+
+
+
+
+
+
+
+
+$sql = mysql_query($query);
+
+
+
+if($sql )
+{
+  
+  
+    echo ' <h2>REAGENDADA  COM SUCESSO!';
+
+    echo '<meta HTTP-EQUIV="Refresh" CONTENT="3;URL=dashboard.php';
+
+
+  
+
+  
+
+  
+}
+else
+{
+  
+echo ' <h2>ERRO NO REAGENDAMENTO!!';
+
+  
+}
+
+
+}
  
 
 ?>
