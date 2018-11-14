@@ -148,7 +148,7 @@ height:70px;
        
       <th>CÓD RET</th>
           <th>NOME</th>
-          <th>CPF</th>
+          <th>PLACA</th>
           <th>UF</th>
         
             <th>CONTATO</th> <!-- ROTA -->

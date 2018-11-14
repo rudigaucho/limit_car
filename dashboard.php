@@ -170,9 +170,7 @@ if(!isset($_SESSION["login"]) &&  !isset($_SESSION["senha"]) )
                             <a href="cad_cli.php"><i class="glyphicon glyphicon-pencil"></i> Cadastro</a>
                         </li>
                         <li class="divider"></li>
-                        <li>
-                            <a href="pesq_cli.php"><i class="glyphicon glyphicon-search"></i> Busca Cliente</a>
-                        </li>
+                        
                         <li class="divider"></li>
                           <li>
                             <a href="pesq_inst.php" ><i class="glyphicon glyphicon-search"></i> Busca Inst</a>
@@ -213,6 +211,26 @@ if(!isset($_SESSION["login"]) &&  !isset($_SESSION["senha"]) )
 
 
                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">CLIENTE   <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                       
+                      
+                        <li>
+                            <a href="pesq_cli.php"><i class="glyphicon glyphicon-pencil"></i> Busca</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="edit_cli.php"><i class="glyphicon glyphicon-plus"></i> Editar</a>
+                        </li>
+                        <li class="divider"></li>
+                          <li>
+                            <a href="del_cli.php" ><i class="glyphicon glyphicon-remove"></i> Deletar</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">LOGOUT   <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                        
@@ -235,13 +253,15 @@ if(!isset($_SESSION["login"]) &&  !isset($_SESSION["senha"]) )
         <div id="page-wrapper">
 
             <div class="container-fluid">
-
+            <img src="img/logo.jpg" style="float:right; height:250px; width:100%;">
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
                             Dashboard <small>Controle</small>
                         </h1>
+
+                        
                         <ol class="breadcrumb">
                             <li class="active">
                                 <i class="fa fa-dashboard"></i> LimitCar
@@ -272,6 +292,7 @@ if(!isset($_SESSION["login"]) &&  !isset($_SESSION["senha"]) )
             <th>CONTATO</th> <!-- ROTA -->
             <th>MODELO</th>
             <th>ANO</th>
+            <th>PLACA</th>
             
              
 
@@ -300,7 +321,7 @@ $sql = mysql_query ("select * from instalacao join cliente on instalacao.cod_cli
 
 $row = mysql_num_rows($sql);
 
- 
+$now = date('Y-m-d');
  
 
 if (mysql_num_rows($sql) > 0)
@@ -309,7 +330,7 @@ if (mysql_num_rows($sql) > 0)
   while ($dado = mysql_fetch_assoc($sql)){
 ?>
     <tbody>
-      <tr class="success">
+      <tr class="" <?php if ($dado ["data_ag"] < $now ) { echo 'style="background: #f7aaaa"'; } else if ($dado ["data_ag"] ==  $now ) { echo 'style="background: #e2e54b"'; } ?>>
       
   <td> <?php echo $dado ["nome"];  ?></td>  
   <td> <?php echo $dado ["data_soli"];  ?></td> 
@@ -317,8 +338,11 @@ if (mysql_num_rows($sql) > 0)
   <td> <?php echo $dado ["endereco"];  ?></td> 
   <td> <?php echo $dado ["bairro"];  ?></td>  
   <td> <?php echo $dado ["contato"];  ?></td> 
-  <td> <?php echo $dado ["mode_vei"];  ?></td> 
+  <td> <?php echo $dado ["mod_vei"];  ?></td> 
   <td> <?php echo $dado ["ano_vei"];  ?></td> 
+  <td> <?php echo $dado ["cpf"];  ?></td>
+  
+  
      
 
 
@@ -362,8 +386,7 @@ if (mysql_num_rows($sql) > 0)
 
 
                  
-
-
+              
 
 
 
@@ -385,7 +408,7 @@ if (mysql_num_rows($sql) > 0)
       <th>BAIRRO</th>
         
       <th>CONTATO</th> <!-- ROTA -->
-      <th>OBS</th>
+      <th>PLACA</th>
            
             
              
@@ -407,32 +430,41 @@ if (mysql_num_rows($sql) > 0)
 
 
 
-$sql = mysql_query ("select * from manutencao join cliente on manutencao.cod_cli=cliente.cod_cli where manutencao.status = 'PENDENTE'" );
+$sql2 = mysql_query ("select * from manutencao join cliente on manutencao.cod_cli=cliente.cod_cli where manutencao.status = 'PENDENTE'" );
 // $sql2 = mysql_query ("select count(*) as conta  from relatorio where gra = '".$busca."' and data BETWEEN  '$data 00:00:00' and '$data 23:59:00' order by data desc   " );
 
   
 
 
-$row = mysql_num_rows($sql);
+$row2 = mysql_num_rows($sql2);
+
 
  
- 
 
-if (mysql_num_rows($sql) > 0)
+if (mysql_num_rows($sql2) > 0)
 
 {
-  while ($dado = mysql_fetch_assoc($sql)){
+  while ($dado2 = mysql_fetch_assoc($sql2)){
+
+   
+
+
 ?>
+   
+
+
     <tbody>
-      <tr class="danger">
+      <tr class=""     <?php if ($dado2 ["data_ag"] < $now ) { echo 'style="background: #f7aaaa"'; } else if ($dado2 ["data_ag"] ==  $now ) { echo 'style="background: #e2e54b"'; } ?>  >
+
       
- <td> <?php echo $dado ["nome"];  ?></td>  
- <td> <?php echo $dado ["data"];  ?></td> 
- <td> <?php echo $dado ["data_ag"];  ?></td>    
- <td> <?php echo $dado ["endereco"];  ?></td> 
- <td> <?php echo $dado ["bairro"];  ?></td>  
- <td> <?php echo $dado ["contato"];  ?></td> 
- <td> <?php echo $dado ["obs"];  ?></td> 
+      
+ <td> <?php echo $dado2 ["nome"];  ?></td>  
+ <td> <?php echo $dado2 ["data"];  ?></td> 
+ <td> <?php echo $dado2 ["data_ag"];  ?></td>    
+ <td> <?php echo $dado2 ["endereco"];  ?></td> 
+ <td> <?php echo $dado2 ["bairro"];  ?></td>  
+ <td> <?php echo $dado2 ["contato"];  ?></td> 
+ <td> <?php echo $dado2 ["cpf"];  ?></td> 
     
      
 
@@ -490,6 +522,7 @@ if (mysql_num_rows($sql) > 0)
         
       <th>CONTATO</th> <!-- ROTA -->
       <th>MODELO</th>
+      <th>PLACA</th>
            
             
              
@@ -511,32 +544,33 @@ if (mysql_num_rows($sql) > 0)
 
 
 
-$sql = mysql_query ("select * from retirada join cliente on retirada.cod_cli=cliente.cod_cli where retirada.status = 'PENDENTE'" );
+$sql3 = mysql_query ("select * from retirada join cliente on retirada.cod_cli=cliente.cod_cli where retirada.status = 'PENDENTE'" );
 // $sql2 = mysql_query ("select count(*) as conta  from relatorio where gra = '".$busca."' and data BETWEEN  '$data 00:00:00' and '$data 23:59:00' order by data desc   " );
 
   
 
 
-$row = mysql_num_rows($sql);
+$row3 = mysql_num_rows($sql3);
 
  
  
 
-if (mysql_num_rows($sql) > 0)
+if (mysql_num_rows($sql3) > 0)
 
 {
-  while ($dado = mysql_fetch_assoc($sql)){
+  while ($dado3 = mysql_fetch_assoc($sql3)){
 ?>
     <tbody>
-      <tr class="warning">
+      <tr class="" <?php if ($dado2 ["data_ag"] < $now ) { echo 'style="background: #f7aaaa"'; } else if ($dado2 ["data_ag"] ==  $now ) { echo 'style="background: #e2e54b"'; } ?>>
       
- <td> <?php echo $dado ["nome"];  ?></td>  
- <td> <?php echo $dado ["data_soli"];  ?></td> 
- <td> <?php echo $dado ["data_ag"];  ?></td>      
- <td> <?php echo $dado ["endereco"];  ?></td> 
- <td> <?php echo $dado ["bairro"];  ?></td>  
- <td> <?php echo $dado ["contato"];  ?></td> 
- <td> <?php echo $dado ["mod_vei"];  ?></td> 
+ <td> <?php echo $dado3 ["nome"];  ?></td>  
+ <td> <?php echo $dado3 ["data_soli"];  ?></td> 
+ <td> <?php echo $dado3 ["data_ag"];  ?></td>      
+ <td> <?php echo $dado3 ["endereco"];  ?></td> 
+ <td> <?php echo $dado3 ["bairro"];  ?></td>  
+ <td> <?php echo $dado3 ["contato"];  ?></td> 
+ <td> <?php echo $dado3 ["mod_vei"];  ?></td> 
+ <td> <?php echo $dado3 ["cpf"];  ?></td>
     
      
 
